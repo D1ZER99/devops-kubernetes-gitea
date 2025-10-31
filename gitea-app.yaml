@@ -40,7 +40,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: gitea-config
-              key: gitea-urlhttp://127.0.0.1:55393
+              key: gitea-url
 
 ---
 apiVersion: v1
