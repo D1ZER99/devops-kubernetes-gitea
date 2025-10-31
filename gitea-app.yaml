@@ -36,6 +36,11 @@ spec:
             secretKeyRef:
               name: gitea-secret
               key: postgres-password
+        - name: GITEA_URL
+          valueFrom:
+            configMapKeyRef:
+              name: gitea-config
+              key: gitea-urlhttp://127.0.0.1:55393
 
 ---
 apiVersion: v1
