@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: gitea-config
 data:
-  gitea-url: # come back ?
+  gitea-url: http://127.0.0.1:55393
