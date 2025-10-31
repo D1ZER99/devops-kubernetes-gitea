@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea-deployment
+  labels:
+    app: gitea
+spec:
+  replicas: 1 # set the number of replicas
+  selector:
+    matchLabels:
+      app: gitea
+  template:
+    metadata:   
+      labels:
+        app: gitea
+    spec:
+      containers:
+      - name: gitea
+        image: gitea/gitea:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_TYPE
+          value: "postgres"
+        - name: DB_HOST
+          value: postgres-service:5432
+        - name: DB_NAME
+          value: "gitea"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: gitea-secret
+              key: postgres-username # indicate postgres username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gitea-secret
+              key: postgres-password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: gitea
+  ports:
+    - protocol: TCP
+      port: 3000 # not sure about this one
+      targetPort: 3000
+      # nodePort: 30001 # no need 
